@@ -1,4 +1,4 @@
-imageDirectory = fullfile('images/Set5');
+imageDirectory = fullfile('images/set6');
 Database = imageDatastore(imageDirectory);
 montage(Database.Files)
 I = readimage(Database,1);

@@ -29,18 +29,22 @@ camRgb.video.link(xoutVideo.input)
 # matrix_A = [[1,0,0,1,0],[0,0,0,1,0],[0,1,0,1,0],[1,1,0,1,0],[1,0,0,0,1]]
 def integral_image(img):
     img = cv2.imread(img)
+    imgg = img
     A = np.array(img)
     print(A)
     print(A.shape)
-    m,n,n_channels = A.shape
+    imgg = img
+    m,n,n_channels = img.shape
     for i in range(m):
         initial_sum = 0
         for j in range(n):
-            initial_sum += A[i][j]
-            A[i][j] = initial_sum
+            initial_sum += img[i][j]
+            img[i][j] = initial_sum
             if i > 0:
-                A[i][j] += A[i-1][j]
-    return A
+                img[i][j] += img[i-1][j]
+    imageIntegralNorm = cv2.normalize(imgg,img,0,255,cv2.NORM_MINMAX)
+    imageIntegralNorm = cv2.convertScaleAbs(img,imageIntegralNorm)
+    return imageIntegralNorm
 
 # Connect to device and start pipeline
 with dai.Device(pipeline) as device:
@@ -51,7 +55,8 @@ with dai.Device(pipeline) as device:
         cv2.imshow("video", videoIn.getCvFrame())
         if cv2.waitKey(1) == ord('c'):
             cv2.imwrite('rgb_image'+str(first_frame)+'.jpg', videoIn.getCvFrame())
-            print(integral_image('rgb_image0.jpg'))
+            imageIntegralNorm = integral_image('rgb_image0.jpg')
+            cv2.imshow('integral',imageIntegralNorm)
             first_frame += 1
         if cv2.waitKey(1) == ord('q'):
             break

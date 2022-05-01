@@ -9,7 +9,7 @@ gray_image2 = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
 gray_image1 = np.array(gray_image1)
 gray_image2 = np.array(gray_image2)
 
-sift = cv2.xfeatures2d.SIFT_create()
+sift = sift = cv2.SIFT_create()
 keypoints_1, descriptors_1 = sift.detectAndCompute(gray_image1,None)
 keypoints_2, descriptors_2 = sift.detectAndCompute(gray_image2,None)
 
